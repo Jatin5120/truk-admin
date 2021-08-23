@@ -3,11 +3,13 @@ import 'package:admin/responsive.dart';
 import 'package:admin/screens/Drivers/DriverReports.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../../constants.dart';
-import 'DriverHeader.dart';
+import 'AddCoupons.dart';
+import 'CouponsHeader.dart';
 
-class DriverScreen extends StatelessWidget {
+class CouponScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -15,7 +17,7 @@ class DriverScreen extends StatelessWidget {
         padding: EdgeInsets.all(defaultPadding),
         child: Column(
           children: [
-            DriverHeader(),
+           CouponsHeader(),
             SizedBox(height: defaultPadding),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,32 +27,7 @@ class DriverScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(height: defaultPadding),
-                      StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection("RegisteredDriver")
-                            .snapshots(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.data == null) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                          QuerySnapshot docs = snapshot.data;
-                          List<Drivers> bm = [];
-                          for (int i = 0; i < docs.docs.length; i++) {
-                            Drivers driver = Drivers(
-                                sN: i + 1,
-                                Aadhar: docs.docs[i]['adhaar'],
-                                Agent: docs.docs[i]['agent'],
-                                DL: docs.docs[i]['dl'],
-                                LED: docs.docs[i]['licenseExpiryDate'],
-                                Mobile: docs.docs[i]['mobile'],
-                                Name: docs.docs[i]['name'],
-                                Pan: docs.docs[i]['pan']);
-                            bm.add(driver);
-                          }
-                          return DriverReport(bm: bm);
-                        },
-                      ),
+                      Coupons(),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),
                       //if (Responsive.isMobile(context)) StarageDetails(),
@@ -72,4 +49,5 @@ class DriverScreen extends StatelessWidget {
       ),
     );
   }
+
 }

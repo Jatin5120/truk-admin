@@ -23,6 +23,6 @@ class MyApp extends StatelessWidget {
         canvasColor: secondaryColor,
       ),
       home: MainScreen(),
-      );
+    );
   }
 }

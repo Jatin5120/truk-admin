@@ -2,9 +2,10 @@ import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../constants.dart';
+import 'package:flutter/rendering.dart';
 
-class CompanyHeader extends StatelessWidget {
-  const CompanyHeader({
+class CouponsHeader extends StatelessWidget {
+  const CouponsHeader({
     Key? key,
   }) : super(key: key);
 
@@ -14,7 +15,7 @@ class CompanyHeader extends StatelessWidget {
       children: [
         if (!Responsive.isMobile(context))
           Text(
-            "Trucks",
+            "Coupons",
             style: Theme.of(context).textTheme.headline6,
           ),
         if (!Responsive.isMobile(context))
@@ -52,7 +53,7 @@ class ProfileCard extends StatelessWidget {
           if (!Responsive.isMobile(context))
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
+              const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
               child: Text("Super Admin"),
             ),
           Icon(Icons.keyboard_arrow_down),

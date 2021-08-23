@@ -1,21 +1,24 @@
+import 'package:admin/controllers/MenuController.dart';
 import 'package:admin/responsive.dart';
+import 'package:admin/screens/Bookings/BookingScreen.dart';
+import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/rendering.dart';
 
 import '../../constants.dart';
-import 'TruckScreen.dart';
+import 'CouponsScreen.dart';
 
-class TruckMainScreen extends StatelessWidget {
+class CouponsMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Responsive.isDesktop(context)
-          ? null
-          : AppBar(
-              elevation: 0.0,
-              backgroundColor: bgColor,
-            ),
-      drawer: !Responsive.isDesktop(context) ? SideMenu() : null,
+      appBar: Responsive.isDesktop(context)?null:AppBar(
+        elevation: 0.0,
+        backgroundColor: bgColor,
+      ),
+      drawer: !Responsive.isDesktop(context)?SideMenu():null,
       body: SafeArea(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,11 +33,12 @@ class TruckMainScreen extends StatelessWidget {
             Expanded(
               // It takes 5/6 part of the screen
               flex: 5,
-              child: TruckScreen(),
+              child: CouponScreen(),
             ),
           ],
         ),
       ),
     );
   }
+
 }

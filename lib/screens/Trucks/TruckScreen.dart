@@ -8,7 +8,7 @@ import '../../constants.dart';
 import 'TruckHeader.dart';
 import 'TruckReports.dart';
 
-class TruckScreen extends StatelessWidget{
+class TruckScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,11 +30,10 @@ class TruckScreen extends StatelessWidget{
                         stream: FirebaseFirestore.instance
                             .collection("Truks")
                             .snapshots(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot snapshot) {
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
                           if (snapshot.data == null) {
-                            return Center(
-                                child: CircularProgressIndicator());
+                            return Center(child: CircularProgressIndicator());
                           }
                           QuerySnapshot docs = snapshot.data;
                           List<Truck> bm = [];
@@ -52,8 +51,8 @@ class TruckScreen extends StatelessWidget{
                             print(docs.docs[i]['trukName']);
                             print(docs.docs[i]['trukNumber']);
                             print(docs.docs[i]['trukType']);
-                            Truck truck= Truck(
-                              sNo: i+1,
+                            Truck truck = Truck(
+                                sNo: i + 1,
                                 driver: docs.docs[i]['driver'],
                                 length: docs.docs[i]['length'],
                                 height: docs.docs[i]['height'],
@@ -66,8 +65,7 @@ class TruckScreen extends StatelessWidget{
                                 permitType: docs.docs[i]['permitType'],
                                 trukName: docs.docs[i]['trukName'],
                                 truknumber: docs.docs[i]['trukNumber'],
-                                trukType: docs.docs[i]['trukType']
-                            );
+                                trukType: docs.docs[i]['trukType']);
                             bm.add(truck);
                           }
                           return TruckReport(bm: bm);
@@ -83,10 +81,10 @@ class TruckScreen extends StatelessWidget{
                   SizedBox(width: defaultPadding),
                 // On Mobile means if the screen is less than 850 we dont want to show it
                 //if (!Responsive.isMobile(context))
-                  // Expanded(
-                  //   flex: 2,
-                  //   child: StarageDetails(),
-                  // ),
+                // Expanded(
+                //   flex: 2,
+                //   child: StarageDetails(),
+                // ),
               ],
             )
           ],

@@ -158,31 +158,35 @@ class _MarketingFinalState extends State<MarketingFinal> {
               ),
             )
           ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FlatButton.icon(
+              color: secondaryColor,
+            onPressed: () {},
+              icon: Icon(Icons.attachment),
+              label: Text('Attach File (s)'),
+                ),
+          ),
           Padding(
             padding: const EdgeInsets.all(50.0),
             child: FlatButton(
                 color: primaryColor,
                 onPressed: () async {
-                  print("pressed");
-                  try{
-                    final mailer = Mailer('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');
-                    final toAddress = Address('yogichoudhary351@gmail.com');
-                    final fromAddress = Address('info@trukapp.com');
-                    final subject = 'Hey There!!';
-                    Map<String,dynamic> dd= {
-                      'Name':'Yogender',
-                      'ID':1234,
-                    };
-                    final personalization = Personalization([toAddress],dynamicTemplateData: dd);
-                    final email =
-                    Email([personalization], fromAddress, subject, templateId: "d-abb7173c4c264e74a85aa69b6a145ab7");
-                    mailer.send(email).then((result) {
-                      // ...
-                      print('mail sent: ${result.asError!.error.toString()}');
-                    });
-                  }catch (e) {
-                    print("Error: $e");
-                  }
+                  final mailer = Mailer('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');
+                  final toAddress = Address('yogichoudhary351@gmail.com');
+                  final fromAddress = Address('info@trukapp.com');
+                  final content = Content('text/plain', msg.text);
+                  final subject = 'Hey There!!';
+                  final personalization = Personalization([toAddress]);
+                  List<Attachment> attachment = [Attachment('kaif', 'shakeel')];
+                  final email =
+                  Email([personalization], fromAddress, subject, content: [content], attachments: attachment);
+                  mailer.send(email).then((result) {
+                    // ...
+                  });
                 },
                 child: Text("Send")
             ),

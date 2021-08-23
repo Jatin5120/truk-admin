@@ -2,6 +2,7 @@ import 'package:admin/screens/Bookings/BookingMain.dart';
 import 'package:admin/screens/Cancelled%20Bookings/CancelledBookingMain.dart';
 import 'package:admin/screens/Drivers/DriverMain.dart';
 import 'package:admin/screens/Marketting%20Screen/MarkettingMain.dart';
+import 'package:admin/screens/Promotional%20Coupons/CouponsMain.dart';
 import 'package:admin/screens/Truck%20Companies/CompanyMain.dart';
 import 'package:admin/screens/Trucks/TruckMain.dart';
 import 'package:admin/screens/main/main_screen.dart';
@@ -71,6 +72,13 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_store.svg",
             press: () {
               Navigator.push(context, MaterialPageRoute(builder: (_)=>MarketingMainScreen()));
+            },
+          ),
+          DrawerListTile(
+            title: "Promotional Coupons",
+            svgSrc: "assets/icons/coupon.svg",
+            press: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>CouponsMain()));
             },
           ),
           DrawerListTile(
