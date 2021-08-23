@@ -15,11 +15,6 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if (!Responsive.isDesktop(context))
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: context.read<MenuController>().controlMenu,
-          ),
         if (!Responsive.isMobile(context))
           Text(
             "Dashboard",
@@ -54,15 +49,14 @@ class ProfileCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image.asset(
-            "assets/images/profile_pic.png",
-            height: 38,
+          CircleAvatar(
+            child: Text("S"),
           ),
           if (!Responsive.isMobile(context))
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child: Text("Angelina Joli"),
+              child: Text("Super Admin"),
             ),
           Icon(Icons.keyboard_arrow_down),
         ],

@@ -1,13 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 import 'chart.dart';
-import 'storage_info_card.dart';
+import 'RevenueStats_card.dart';
 
-class StarageDetails extends StatelessWidget {
-  const StarageDetails({
-    Key? key,
-  }) : super(key: key);
+class RevenueStats extends StatefulWidget {
+  int cod;
+  int totalR;
+  int commision;
+  RevenueStats({
+   required this.commision,
+   required this.cod,
+   required this.totalR
+});
+  @override
+  _RevenueStatsState createState() => _RevenueStatsState();
+}
+
+class _RevenueStatsState extends State<RevenueStats> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,40 +33,34 @@ class StarageDetails extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Storage Details",
+            "Revenue Stats",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
           ),
           SizedBox(height: defaultPadding),
-          Chart(),
           StorageInfoCard(
-            svgSrc: "assets/icons/Documents.svg",
-            title: "Documents Files",
+            svgSrc: "assets/icons/revenue.svg",
+            title: "Total Revenue",
             amountOfFiles: "1.3GB",
-            numOfFiles: 1328,
+            numOfFiles: widget.totalR,
           ),
           StorageInfoCard(
-            svgSrc: "assets/icons/media.svg",
-            title: "Media Files",
+            svgSrc: "assets/icons/cash.svg",
+            title: "Total COD",
             amountOfFiles: "15.3GB",
-            numOfFiles: 1328,
+            numOfFiles: widget.cod,
           ),
           StorageInfoCard(
-            svgSrc: "assets/icons/folder.svg",
-            title: "Other Files",
+            svgSrc: "assets/icons/commission.svg",
+            title: "Total Commission",
             amountOfFiles: "1.3GB",
-            numOfFiles: 1328,
-          ),
-          StorageInfoCard(
-            svgSrc: "assets/icons/unknown.svg",
-            title: "Unknown",
-            amountOfFiles: "1.3GB",
-            numOfFiles: 140,
+            numOfFiles: widget.commision,
           ),
         ],
       ),
     );
   }
 }
+

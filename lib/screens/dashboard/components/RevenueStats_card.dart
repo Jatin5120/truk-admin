@@ -31,7 +31,7 @@ class StorageInfoCard extends StatelessWidget {
           SizedBox(
             height: 20,
             width: 20,
-            child: SvgPicture.asset(svgSrc),
+            child: SvgPicture.asset(svgSrc,color: Colors.deepOrange,),
           ),
           Expanded(
             child: Padding(
@@ -45,7 +45,7 @@ class StorageInfoCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    "$numOfFiles Files",
+                    "$numOfFiles",
                     style: Theme.of(context)
                         .textTheme
                         .caption!
@@ -55,7 +55,6 @@ class StorageInfoCard extends StatelessWidget {
               ),
             ),
           ),
-          Text(amountOfFiles)
         ],
       ),
     );

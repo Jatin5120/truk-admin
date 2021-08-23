@@ -1,16 +1,16 @@
-import 'package:admin/models/MyFiles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:admin/models/MyFiles.dart';
 
 import '../../../constants.dart';
 
 class FileInfoCard extends StatelessWidget {
-  const FileInfoCard({
+  FileInfoCard({
     Key? key,
     required this.info,
   }) : super(key: key);
 
-  final CloudStorageInfo info;
+  statisticalData info;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,6 @@ class FileInfoCard extends StatelessWidget {
                   color: info.color,
                 ),
               ),
-              Icon(Icons.more_vert, color: Colors.white54)
             ],
           ),
           Text(
@@ -56,18 +55,11 @@ class FileInfoCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "${info.numOfFiles} Files",
+                "${info.numOfFiles}",
                 style: Theme.of(context)
                     .textTheme
                     .caption!
                     .copyWith(color: Colors.white70),
-              ),
-              Text(
-                info.totalStorage!,
-                style: Theme.of(context)
-                    .textTheme
-                    .caption!
-                    .copyWith(color: Colors.white),
               ),
             ],
           )

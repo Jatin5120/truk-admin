@@ -27,15 +27,36 @@ class Chart extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: defaultPadding),
-                Text(
-                  "29.1",
-                  style: Theme.of(context).textTheme.headline4!.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        height: 0.5,
-                      ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 2.0,
+                      backgroundColor: Color(0xFFEE2727),
+                    ),
+                    Text("General Users")
+                  ],
                 ),
-                Text("of 128GB")
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 2.0,
+                      backgroundColor: Color(0xFFFFCF26),
+                    ),
+                    Text("Drivers")
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 2.0,
+                      backgroundColor: Color(0xFF26E5FF),
+                    ),
+                    Text("Companies")
+                  ],
+                ),
               ],
             ),
           ),
@@ -47,33 +68,21 @@ class Chart extends StatelessWidget {
 
 List<PieChartSectionData> paiChartSelectionDatas = [
   PieChartSectionData(
-    color: primaryColor,
-    value: 25,
-    showTitle: false,
-    radius: 25,
-  ),
-  PieChartSectionData(
     color: Color(0xFF26E5FF),
-    value: 20,
+    value: 30,
     showTitle: false,
     radius: 22,
   ),
   PieChartSectionData(
     color: Color(0xFFFFCF26),
-    value: 10,
+    value: 20,
     showTitle: false,
     radius: 19,
   ),
   PieChartSectionData(
     color: Color(0xFFEE2727),
-    value: 15,
+    value: 50,
     showTitle: false,
     radius: 16,
-  ),
-  PieChartSectionData(
-    color: primaryColor.withOpacity(0.1),
-    value: 25,
-    showTitle: false,
-    radius: 13,
   ),
 ];

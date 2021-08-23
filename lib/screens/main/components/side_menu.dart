@@ -1,3 +1,10 @@
+import 'package:admin/screens/Bookings/BookingMain.dart';
+import 'package:admin/screens/Cancelled%20Bookings/CancelledBookingMain.dart';
+import 'package:admin/screens/Drivers/DriverMain.dart';
+import 'package:admin/screens/Marketting%20Screen/MarkettingMain.dart';
+import 'package:admin/screens/Truck%20Companies/CompanyMain.dart';
+import 'package:admin/screens/Trucks/TruckMain.dart';
+import 'package:admin/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -12,32 +19,59 @@ class SideMenu extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.white
+            ),
             child: Image.asset("assets/images/logo.png"),
           ),
           DrawerListTile(
-            title: "Dashbord",
+            title: "Dashboard",
             svgSrc: "assets/icons/menu_dashbord.svg",
-            press: () {},
+            press: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>MainScreen()));
+            },
           ),
           DrawerListTile(
-            title: "Transaction",
-            svgSrc: "assets/icons/menu_tran.svg",
-            press: () {},
+            title: "Bookings",
+            svgSrc: "assets/icons/bookmark.svg",
+            press: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>BookingMainScreen()));
+            },
           ),
           DrawerListTile(
-            title: "Task",
-            svgSrc: "assets/icons/menu_task.svg",
-            press: () {},
+            title: "Cancelled Booking",
+            svgSrc: "assets/icons/cancelbookmark.svg",
+            press: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>CBookingMainScreen()));
+            },
           ),
           DrawerListTile(
-            title: "Documents",
-            svgSrc: "assets/icons/menu_doc.svg",
-            press: () {},
+            title: "Drivers",
+            svgSrc: "assets/icons/driver.svg",
+            press: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>DriverMainScreen()));
+            },
           ),
           DrawerListTile(
-            title: "Store",
+            title: "Truck Companies",
             svgSrc: "assets/icons/menu_store.svg",
-            press: () {},
+            press: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>CompaniesMainScreen()));
+            },
+          ),
+          DrawerListTile(
+            title: "Trucks",
+            svgSrc: "assets/icons/truck_svg.svg",
+            press: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>TruckMainScreen()));
+            },
+          ),
+          DrawerListTile(
+            title: "Marketing",
+            svgSrc: "assets/icons/menu_store.svg",
+            press: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>MarketingMainScreen()));
+            },
           ),
           DrawerListTile(
             title: "Notification",
@@ -45,8 +79,8 @@ class SideMenu extends StatelessWidget {
             press: () {},
           ),
           DrawerListTile(
-            title: "Profile",
-            svgSrc: "assets/icons/menu_profile.svg",
+            title: "About",
+            svgSrc: "assets/icons/about.svg",
             press: () {},
           ),
           DrawerListTile(

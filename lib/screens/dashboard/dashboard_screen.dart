@@ -1,14 +1,23 @@
 import 'package:admin/responsive.dart';
-import 'package:admin/screens/dashboard/components/my_fields.dart';
+import 'package:admin/screens/dashboard/components/Statics.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 import 'components/header.dart';
 
-import 'components/recent_files.dart';
-import 'components/storage_details.dart';
+import 'components/report.dart';
+import 'components/RevenueStats.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  int cod=0;
+  int totalR=0;
+  int commission=0;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,12 +34,33 @@ class DashboardScreen extends StatelessWidget {
                   flex: 5,
                   child: Column(
                     children: [
-                      MyFiles(),
+                      StaticsM(),
                       SizedBox(height: defaultPadding),
-                      RecentFiles(),
+                      Report(),
+                      SizedBox(height: defaultPadding),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),
-                      if (Responsive.isMobile(context)) StarageDetails(),
+                      if (Responsive.isMobile(context)) StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("Shipment")
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot snapshot) {
+                          if (snapshot.data == null) {
+                            return Center(
+                                child: CircularProgressIndicator());
+                          }
+                          QuerySnapshot docs = snapshot.data;
+                          for (int i = 0; i < docs.docs.length; i++) {
+                            ///GET DATA HERE
+                            if(docs.docs[i]['paymentStatus']=='COD'){
+                              cod+=int.parse(docs.docs[i]['price']);
+                            }
+                            totalR+=int.parse(docs.docs[i]['price']);
+                          }
+                          return RevenueStats(commision: commission, cod: cod, totalR: totalR);
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -40,7 +70,27 @@ class DashboardScreen extends StatelessWidget {
                 if (!Responsive.isMobile(context))
                   Expanded(
                     flex: 2,
-                    child: StarageDetails(),
+                    child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("Shipment")
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot snapshot) {
+                        if (snapshot.data == null) {
+                          return Center(
+                              child: CircularProgressIndicator());
+                        }
+                        QuerySnapshot docs = snapshot.data;
+                        for (int i = 0; i < docs.docs.length; i++) {
+                          ///GET DATA HERE
+                          if(docs.docs[i]['paymentStatus']=='COD'){
+                            cod+=int.parse(docs.docs[i]['price']);
+                          }
+                          totalR+=int.parse(docs.docs[i]['price']);
+                        }
+                        return RevenueStats(commision: commission, cod: cod, totalR: totalR);
+                      },
+                    )
                   ),
               ],
             )
@@ -50,3 +100,4 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 }
+
