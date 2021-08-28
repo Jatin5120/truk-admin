@@ -153,7 +153,7 @@ class _AddDriverState extends State<AddDriver> {
         ),
       ),
       actions: [
-        TextButton(
+        ElevatedButton(
           onPressed: () {
             FirebaseFirestore.instance
                 .collection("RegisteredDriver")
@@ -179,7 +179,7 @@ class _AddDriverState extends State<AddDriver> {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TextButton(
+          child: ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
             },
