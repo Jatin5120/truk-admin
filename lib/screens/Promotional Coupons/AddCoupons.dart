@@ -167,15 +167,17 @@ class _CouponsState extends State<Coupons> {
           ),
           ElevatedButton(
             onPressed: () {
+              int discount = int.parse(_discount.text);
               int min = int.parse(_min.text);
               int max = int.parse(_max.text);
               int expiry = int.parse(_expiry.text);
-              List pincodeList = _pincode.text.split(',');
-
+              String str = _pincode.text;
+              List<String> lstring = str.split(',');
+              Iterable<int> pincodeList = lstring.map(int.parse);
               FirebaseFirestore.instance.collection("Coupons").doc().set({
                 "code": _code.text,
                 "description": _description.text,
-                "discountPercent": _discount.text,
+                "discountPercent": discount,
                 "expiry": expiry,
                 "min": min,
                 "max": max,
