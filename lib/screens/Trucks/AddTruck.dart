@@ -286,7 +286,7 @@ class _AddTruckState extends State<AddTruck> {
         ),
       ),
       actions: [
-        TextButton(
+        ElevatedButton(
           onPressed: () {
             FirebaseFirestore.instance
                 .collection("Truks")
@@ -317,7 +317,7 @@ class _AddTruckState extends State<AddTruck> {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TextButton(
+          child: ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
             },

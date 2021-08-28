@@ -1,7 +1,9 @@
+import 'package:admin/screens/About/AboutMain.dart';
 import 'package:admin/screens/Bookings/BookingMain.dart';
 import 'package:admin/screens/Cancelled%20Bookings/CancelledBookingMain.dart';
 import 'package:admin/screens/Drivers/DriverMain.dart';
 import 'package:admin/screens/Marketting%20Screen/MarkettingMain.dart';
+import 'package:admin/screens/Notification/NotificationMain.dart';
 import 'package:admin/screens/Promotional%20Coupons/CouponsMain.dart';
 import 'package:admin/screens/Truck%20Companies/CompanyMain.dart';
 import 'package:admin/screens/Trucks/TruckMain.dart';
@@ -20,76 +22,88 @@ class SideMenu extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.white
-            ),
+            decoration: BoxDecoration(color: Colors.white),
             child: Image.asset("assets/images/logo.png"),
           ),
           DrawerListTile(
             title: "Dashboard",
             svgSrc: "assets/icons/menu_dashbord.svg",
             press: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>MainScreen()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => MainScreen()));
             },
           ),
           DrawerListTile(
             title: "Bookings",
             svgSrc: "assets/icons/bookmark.svg",
             press: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>BookingMainScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => BookingMainScreen()));
             },
           ),
           DrawerListTile(
             title: "Cancelled Booking",
             svgSrc: "assets/icons/cancelbookmark.svg",
             press: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>CBookingMainScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => CBookingMainScreen()));
             },
           ),
           DrawerListTile(
             title: "Drivers",
             svgSrc: "assets/icons/driver.svg",
             press: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>DriverMainScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => DriverMainScreen()));
             },
           ),
           DrawerListTile(
             title: "Truck Companies",
             svgSrc: "assets/icons/menu_store.svg",
             press: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>CompaniesMainScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => CompaniesMainScreen()));
             },
           ),
           DrawerListTile(
             title: "Trucks",
             svgSrc: "assets/icons/truck_svg.svg",
             press: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>TruckMainScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => TruckMainScreen()));
             },
           ),
           DrawerListTile(
             title: "Marketing",
             svgSrc: "assets/icons/menu_store.svg",
             press: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>MarketingMainScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => MarketingMainScreen()));
             },
           ),
           DrawerListTile(
             title: "Promotional Coupons",
-            svgSrc: "assets/icons/coupon.svg",
+            svgSrc: "assets/icons/menu_store.svg",
             press: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>CouponsMain()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => CouponsMain()));
             },
           ),
           DrawerListTile(
             title: "Notification",
             svgSrc: "assets/icons/menu_notification.svg",
-            press: () {},
+            press: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => NotificationMain()));
+            },
           ),
           DrawerListTile(
             title: "About",
             svgSrc: "assets/icons/about.svg",
-            press: () {},
+            press: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => AboutMain()));
+            },
           ),
           DrawerListTile(
             title: "Settings",

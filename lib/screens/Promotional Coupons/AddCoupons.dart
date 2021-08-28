@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:admin/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Coupons extends StatefulWidget {
   const Coupons({Key? key}) : super(key: key);
@@ -15,25 +16,28 @@ class _CouponsState extends State<Coupons> {
   TextEditingController _discount = new TextEditingController();
   TextEditingController _expiry = new TextEditingController();
   TextEditingController _min = new TextEditingController();
+
+  TextEditingController _max = new TextEditingController();
   TextEditingController _name = new TextEditingController();
   TextEditingController _pincode = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(defaultPadding),
-    decoration: BoxDecoration(
-    color: secondaryColor,
-    borderRadius: const BorderRadius.all(Radius.circular(10)),
-    ),
+      padding: EdgeInsets.all(defaultPadding),
+      decoration: BoxDecoration(
+        color: secondaryColor,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+      ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
+          Wrap(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
                 child: Container(
-                  width: 200,
+                  width: 500,
                   height: 100,
                   child: TextFormField(
                     controller: _code,
@@ -46,27 +50,27 @@ class _CouponsState extends State<Coupons> {
                   ),
                 ),
               ),
-              Container(
-                width: double.infinity,
-                color: secondaryColor,
-                child: TextFormField(
-                  controller: _description,
-                  enabled: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Describe the coupon',
-                    labelText: 'Description',
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
+                child: Container(
+                  width: 500,
+                  height: 100,
+                  color: secondaryColor,
+                  child: TextFormField(
+                    controller: _description,
+                    enabled: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Describe the coupon',
+                      labelText: 'Description',
+                    ),
                   ),
                 ),
-              )
-            ],
-          ),
-          Row(
-            children: [
+              ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
                 child: Container(
-                  width: 200,
+                  width: 500,
                   height: 100,
                   child: TextFormField(
                     controller: _discount,
@@ -80,13 +84,13 @@ class _CouponsState extends State<Coupons> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
                 child: Container(
-                  width: 200,
+                  width: 500,
                   height: 100,
                   child: TextFormField(
                     controller: _expiry,
-                    enabled: false,
+                    enabled: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Select the Date',
@@ -94,15 +98,11 @@ class _CouponsState extends State<Coupons> {
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
-          Row(
-            children: [
+              ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
                 child: Container(
-                  width: 200,
+                  width: 500,
                   height: 100,
                   child: TextFormField(
                     controller: _min,
@@ -116,9 +116,25 @@ class _CouponsState extends State<Coupons> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
                 child: Container(
-                  width: 200,
+                  width: 500,
+                  height: 100,
+                  child: TextFormField(
+                    controller: _max,
+                    enabled: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Maximum Amount',
+                      labelText: 'Maximum Amount',
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
+                child: Container(
+                  width: 500,
                   height: 100,
                   child: TextFormField(
                     controller: _name,
@@ -131,14 +147,10 @@ class _CouponsState extends State<Coupons> {
                   ),
                 ),
               ),
-            ],
-          ),
-          Row(
-            children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
                 child: Container(
-                  width: 200,
+                  width: 500,
                   height: 100,
                   child: TextFormField(
                     controller: _pincode,
@@ -153,9 +165,40 @@ class _CouponsState extends State<Coupons> {
               ),
             ],
           ),
+          ElevatedButton(
+            onPressed: () {
+              FirebaseFirestore.instance.collection("Coupons").doc().set({
+                "code": _code.text,
+                "description": _description.text,
+                "discountPercent": _discount.text,
+                "expiry": _expiry.text,
+                "min": _min.text,
+                "max": _max.text,
+                "name": _name.text,
+                "pincode": _pincode.text,
+              }).catchError((e) {
+                print(e);
+              }).then(
+                (value) => {
+                  print("success"),
+                  _code.clear(),
+                  _discount.clear(),
+                  _description.clear(),
+                  _expiry.clear(),
+                  _max.clear(),
+                  _min.clear(),
+                  _name.clear(),
+                  _pincode.clear(),
+                },
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Text("Upload"),
+            ),
+          ),
         ],
       ),
     );
   }
 }
-

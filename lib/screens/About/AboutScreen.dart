@@ -1,15 +1,12 @@
-import 'package:admin/models/DriverModel.dart';
 import 'package:admin/responsive.dart';
-import 'package:admin/screens/Drivers/DriverReports.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:admin/screens/About/AboutHeader.dart';
+import 'package:admin/screens/About/about.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../constants.dart';
-import 'AddCoupons.dart';
-import 'CouponsHeader.dart';
 
-class CouponScreen extends StatelessWidget {
+class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -17,7 +14,7 @@ class CouponScreen extends StatelessWidget {
         padding: EdgeInsets.all(defaultPadding),
         child: Column(
           children: [
-            CouponsHeader(),
+            ABoutHeader(),
             SizedBox(height: defaultPadding),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +24,7 @@ class CouponScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(height: defaultPadding),
-                      Coupons(),
+                      About(),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),
                       //if (Responsive.isMobile(context)) StarageDetails(),

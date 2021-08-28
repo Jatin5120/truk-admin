@@ -157,7 +157,7 @@ class _CreateFleetState extends State<CreateFleet> {
         ),
       ),
       actions: [
-        TextButton(
+        ElevatedButton(
           onPressed: () {
             FirebaseFirestore.instance.collection("FleetOwners").doc().set({
               "city": _city.text,
@@ -165,7 +165,7 @@ class _CreateFleetState extends State<CreateFleet> {
               'company': _company.text,
               "gst": "",
               "image": "",
-              "joining": "",
+              "joining": DateTime.now().millisecondsSinceEpoch,
               "mobile": _phone.text,
               "name": _name.text,
               'notification': false,
@@ -185,7 +185,7 @@ class _CreateFleetState extends State<CreateFleet> {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TextButton(
+          child: ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
             },
