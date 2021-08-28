@@ -44,20 +44,17 @@ class _DriverReportState extends State<DriverReport> {
         percentage = (((i + 1) / widget.bm.length) * 100).toStringAsFixed(2);
       });
       await FirebaseFirestore.instance
-          .collection('FleetOwners')
+          .collection('FleetOwners').where('uid',isEqualTo: widget.bm[i].Agent)
           .get()
           .then((value) {
-        for (var data in value.docs) {
-          if (data.id == widget.bm[i].Agent) {
             setState(() {
-              an.add(data['name']);
+              an.add(value.docs[0].get('name'));
             });
-          }
-        }
       });
     }
     setState(() {
       isLoading = false;
+      print(an.length);
     });
   }
 
