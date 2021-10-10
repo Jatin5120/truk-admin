@@ -2,6 +2,7 @@ import 'package:admin/screens/About/AboutMain.dart';
 import 'package:admin/screens/Bookings/BookingMain.dart';
 import 'package:admin/screens/Cancelled%20Bookings/CancelledBookingMain.dart';
 import 'package:admin/screens/Drivers/DriverMain.dart';
+import 'package:admin/screens/Insurance/InsuranceScreen.dart';
 import 'package:admin/screens/Marketting%20Screen/MarkettingMain.dart';
 import 'package:admin/screens/Notification/NotificationMain.dart';
 import 'package:admin/screens/Promotional%20Coupons/CouponsMain.dart';
@@ -71,6 +72,14 @@ class SideMenu extends StatelessWidget {
             press: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (_) => TruckMainScreen()));
+            },
+          ),
+          DrawerListTile(
+            title: "Insurance",
+            svgSrc: "assets/icons/insurance.svg",
+            press: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => InsuranceScreen()));
             },
           ),
           DrawerListTile(
