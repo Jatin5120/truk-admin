@@ -2,6 +2,8 @@ import 'package:admin/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart';
 
+import '../../constants.dart';
+
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
 
@@ -15,6 +17,7 @@ class _LoginViewState extends State<LoginView> {
   bool _isValidate = false;
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Center(
         child: Column(
@@ -51,6 +54,7 @@ class _LoginViewState extends State<LoginView> {
                 child: TextFormField(
                   controller: _password,
                   enabled: true,
+                  obscureText: true,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter Password',
@@ -66,6 +70,16 @@ class _LoginViewState extends State<LoginView> {
                   )
                 : Container(),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.02,
+                    vertical: size.height * 0.02,
+                  ),
+                ),
                 onPressed: () {
                   if (_username.text == "admin" && _password.text == "admin") {
                     Navigator.of(context).push(MaterialPageRoute(

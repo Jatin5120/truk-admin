@@ -1,16 +1,7 @@
-import 'package:admin/screens/About/AboutMain.dart';
-import 'package:admin/screens/Bookings/BookingMain.dart';
-import 'package:admin/screens/Cancelled%20Bookings/CancelledBookingMain.dart';
-import 'package:admin/screens/Drivers/DriverMain.dart';
-import 'package:admin/screens/Insurance/InsuranceScreen.dart';
-import 'package:admin/screens/Marketting%20Screen/MarkettingMain.dart';
-import 'package:admin/screens/Notification/NotificationMain.dart';
-import 'package:admin/screens/Promotional%20Coupons/CouponsMain.dart';
-import 'package:admin/screens/Truck%20Companies/CompanyMain.dart';
-import 'package:admin/screens/Trucks/TruckMain.dart';
-import 'package:admin/screens/main/main_screen.dart';
+import 'package:admin/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'drawer_item.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({
@@ -26,99 +17,14 @@ class SideMenu extends StatelessWidget {
             decoration: BoxDecoration(color: Colors.white),
             child: Image.asset("assets/images/logo.png"),
           ),
-          DrawerListTile(
-            title: "Dashboard",
-            svgSrc: "assets/icons/menu_dashbord.svg",
-            press: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => MainScreen()));
-            },
-          ),
-          DrawerListTile(
-            title: "Bookings",
-            svgSrc: "assets/icons/bookmark.svg",
-            press: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => BookingMainScreen()));
-            },
-          ),
-          DrawerListTile(
-            title: "Cancelled Booking",
-            svgSrc: "assets/icons/cancelbookmark.svg",
-            press: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => CBookingMainScreen()));
-            },
-          ),
-          DrawerListTile(
-            title: "Drivers",
-            svgSrc: "assets/icons/driver.svg",
-            press: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => DriverMainScreen()));
-            },
-          ),
-          DrawerListTile(
-            title: "Truck Companies",
-            svgSrc: "assets/icons/menu_store.svg",
-            press: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => CompaniesMainScreen()));
-            },
-          ),
-          DrawerListTile(
-            title: "Trucks",
-            svgSrc: "assets/icons/truck_svg.svg",
-            press: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => TruckMainScreen()));
-            },
-          ),
-          DrawerListTile(
-            title: "Insurance",
-            svgSrc: "assets/icons/insurance.svg",
-            press: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => InsuranceScreen()));
-            },
-          ),
-          DrawerListTile(
-            title: "Marketing",
-            svgSrc: "assets/icons/menu_store.svg",
-            press: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => MarketingMainScreen()));
-            },
-          ),
-          DrawerListTile(
-            title: "Promotional Coupons",
-            svgSrc: "assets/icons/menu_store.svg",
-            press: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => CouponsMain()));
-            },
-          ),
-          DrawerListTile(
-            title: "Notification",
-            svgSrc: "assets/icons/menu_notification.svg",
-            press: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => NotificationMain()));
-            },
-          ),
-          DrawerListTile(
-            title: "About",
-            svgSrc: "assets/icons/about.svg",
-            press: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => AboutMain()));
-            },
-          ),
-          DrawerListTile(
-            title: "Settings",
-            svgSrc: "assets/icons/menu_setting.svg",
-            press: () {},
-          ),
+          for (int i = 0; i < drawerItems.length; i++) ...[
+            DrawerListTile(
+              title: drawerItems[i].title,
+              svgPath: drawerItems[i].svgPath,
+              index: i,
+              screen: drawerItems[i].screen,
+            ),
+          ]
         ],
       ),
     );
@@ -130,26 +36,61 @@ class DrawerListTile extends StatelessWidget {
     Key? key,
     // For selecting those three line once press "Command+D"
     required this.title,
-    required this.svgSrc,
-    required this.press,
+    required this.svgPath,
+    required this.index,
+    this.screen,
   }) : super(key: key);
 
-  final String title, svgSrc;
-  final VoidCallback press;
+  final String title;
+  final String svgPath;
+  final Widget? screen;
+  final int index;
+
+  static int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: press,
-      horizontalTitleGap: 0.0,
-      leading: SvgPicture.asset(
-        svgSrc,
-        color: Colors.white54,
-        height: 16,
-      ),
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.white54),
+    return InkWell(
+      splashColor: Colors.transparent,
+      onTap: screen == null
+          ? () {}
+          : () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => screen!,
+                ),
+              );
+              _selectedIndex = index;
+            },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: _selectedIndex == index ? selectedColor : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Wrap(
+          direction: Axis.horizontal,
+          alignment: WrapAlignment.start,
+          children: [
+            SvgPicture.asset(
+              svgPath,
+              color: _selectedIndex == index ? Colors.white : Colors.white54,
+              height: 16,
+            ),
+            SizedBox(width: 16),
+            Text(
+              title,
+              style: TextStyle(
+                color: _selectedIndex == index ? Colors.white : Colors.white54,
+                overflow: TextOverflow.ellipsis,
+              ),
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }

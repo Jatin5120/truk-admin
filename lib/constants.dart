@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
-const primaryColor = Color(0xFF2697FF);
-const secondaryColor = Color(0xFF2A2D3E);
-const bgColor = Color(0xFF212332);
-const kGoogleApiKey = "AIzaSyD2i2ei-OODxzCSPvki5CaqxAtbKCJXlsM";
-List<String> states =["Andhra Pradesh",
+const Color primaryColor = Color(0xFF2697FF);
+const Color secondaryColor = Color(0xFF2A2D3E);
+const Color bgColor = Color(0xFF212332);
+const Color selectedColor = Color(0xFF181A25);
+
+const String iconPath = 'assets/icons/';
+
+const String kGoogleApiKey = "AIzaSyD2i2ei-OODxzCSPvki5CaqxAtbKCJXlsM";
+
+List<String> states = [
+  "Andhra Pradesh",
   "Assam",
   "Arunachal Pradesh",
   "Bihar",
@@ -17,7 +23,7 @@ List<String> states =["Andhra Pradesh",
   "Kerala",
   "Madhya Pradesh",
   "Maharashtra",
-  "Telangana"
+  "Telangana",
   "Manipur",
   "Meghalaya",
   "Mizoram",
@@ -39,6 +45,6 @@ List<String> states =["Andhra Pradesh",
   "Delhi",
   "Lakshadweep",
   "Puducherry",
-  "Ladakh"
+  "Ladakh",
 ];
 const defaultPadding = 16.0;
