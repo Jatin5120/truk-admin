@@ -120,10 +120,24 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                     vertical: size.height * 0.02,
                   ),
                 ),
-                onPressed: () {
-                  if (_formKey.currentState!.validate())
-                    FirebaseHelper.updateInsurance(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        print("Dialog");
+                        return AlertDialog(
+                          content: ProgressAlert(
+                            text: 'Loading ..',
+                          ),
+                        );
+                      },
+                    );
+                    print("After dialog");
+                    await FirebaseHelper.updateInsurance(
                         _insuranceType, _insuranceController.text);
+                    Navigator.pop(context);
+                  }
                 },
                 child: Text('Save Insurance'),
               ),
