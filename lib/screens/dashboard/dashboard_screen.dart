@@ -58,8 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             }
                             totalR+=int.parse(docs.docs[i]['price']);
                           }
-                          /// TODO Commsition
-                          return RevenueStats(commision: totalR~/10, cod: cod, totalR: totalR);
+                          return RevenueStats(commision: commission, cod: cod, totalR: totalR);
                         },
                       ),
                     ],
@@ -89,7 +88,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           }
                           totalR+=int.parse(docs.docs[i]['price']);
                         }
-                        return RevenueStats(commision: totalR~/10, cod: cod, totalR: totalR);
+                        return RevenueStats(commision: commission, cod: cod, totalR: totalR);
                       },
                     )
                   ),
