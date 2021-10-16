@@ -15,6 +15,14 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+
+  @override
+  void setState(fn) {
+    if(mounted) {
+      super.setState(fn);
+    }
+  }
+
   int cod = 0;
   int totalR = 0;
   int commission = 0;
@@ -58,7 +66,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               totalR += int.parse(docs.docs[i]['price']);
                             }
                             return RevenueStats(
-                              commision: commission,
+                              commission: commission,
                               cod: cod,
                               totalR: totalR,
                             );
@@ -68,7 +76,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ],
                   ),
                 ),
-                // On Mobile means if the screen is less than 850 we dont want to show it
+                // On Mobile means if the screen is less than 850 we don't want to show it
                 if (!Responsive.isMobile(context)) ...[
                   SizedBox(width: defaultPadding),
                   Expanded(
@@ -90,7 +98,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           totalR += int.parse(docs.docs[i]['price']);
                         }
                         return RevenueStats(
-                          commision: commission,
+                          commission: commission,
                           cod: cod,
                           totalR: totalR,
                         );

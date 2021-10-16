@@ -170,7 +170,7 @@ class _CouponsState extends State<Coupons> {
               int discount = int.parse(_discount.text);
               int min = int.parse(_min.text);
               int max = int.parse(_max.text);
-              int expiry = int.parse(_expiry.text);
+              String expiry = _expiry.text;
               String str = _pincode.text;
               List<String> lstring = str.split(',');
               Iterable<int> pincodeList = lstring.map(int.parse);
@@ -184,7 +184,7 @@ class _CouponsState extends State<Coupons> {
                 "name": _name.text,
                 "pincode": pincodeList,
               }).catchError((e) {
-                print(e);
+                print("Error adding coupon --> ${e.toString()}");
               }).then(
                 (value) => {
                   print("success"),

@@ -21,6 +21,13 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
     onChange(_insuranceType);
   }
 
+  @override
+  void setState(fn) {
+    if(mounted) {
+      super.setState(fn);
+    }
+  }
+
   onChange(int value) async {
     try {
       showDialog(

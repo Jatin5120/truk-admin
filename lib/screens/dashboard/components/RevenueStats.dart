@@ -6,21 +6,21 @@ import 'chart.dart';
 import 'RevenueStats_card.dart';
 
 class RevenueStats extends StatefulWidget {
-  int cod;
-  int totalR;
-  int commision;
-  RevenueStats({
-   required this.commision,
-   required this.cod,
-   required this.totalR
-});
+  final int cod;
+  final int totalR;
+  final int commission;
+
+  const RevenueStats({
+    required this.commission,
+    required this.cod,
+    required this.totalR,
+  });
+
   @override
   _RevenueStatsState createState() => _RevenueStatsState();
 }
 
 class _RevenueStatsState extends State<RevenueStats> {
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,11 +56,10 @@ class _RevenueStatsState extends State<RevenueStats> {
             svgSrc: "assets/icons/commission.svg",
             title: "Total Commission",
             amountOfFiles: "1.3GB",
-            numOfFiles: widget.commision,
+            numOfFiles: widget.commission,
           ),
         ],
       ),
     );
   }
 }
-
