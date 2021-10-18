@@ -1,21 +1,11 @@
-import 'dart:convert';
-
 import 'package:admin/Helper/DownloadHelper.dart';
-import 'package:admin/models/BookingModels.dart';
-import 'package:admin/models/CancelledBookingModel.dart';
-import 'package:admin/models/DriverModel.dart';
 import 'package:admin/models/FleetModel.dart';
-import 'package:admin/screens/Bookings/ViewBooking.dart';
-import 'package:admin/screens/Drivers/ViewDrivers.dart';
 import 'package:admin/screens/Truck%20Companies/CreateFleet.dart';
 import 'package:admin/screens/Truck%20Companies/ViewFleet.dart';
 import 'package:admin/widgets/AlertProgress.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:data_table_2/data_table_2.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../constants.dart';
 import '../../responsive.dart';
 
@@ -37,9 +27,10 @@ class _CompanyReportState extends State<CompanyReport> {
   int currPage = 1;
   String percentage = '0';
   int iCount = 10;
-  List<int> totalRevenues = [];
-  List<int> codRevenues = [];
-  List<int> onlineRevenues = [];
+  List<double> totalRevenues = [];
+  List<double> codRevenues = [];
+  List<double> onlineRevenues = [];
+  List<List<CommissionHistory>> commissionHistories = [];
 
   static const List<String> _tableHeader = [
     'S. No.',
@@ -54,6 +45,7 @@ class _CompanyReportState extends State<CompanyReport> {
     // 'Commission Pending',
     // 'Pending Dues',
     'Change Commission',
+    'Commission History',
   ];
 
   getData() async {
@@ -69,23 +61,38 @@ class _CompanyReportState extends State<CompanyReport> {
         await FirebaseFirestore.instance.collection("Shipment").get();
 
     for (int i = 0; i < widget.fleetOwners.length; i++) {
+      List<CommissionHistory> histories = [];
       String uid = widget.fleetOwners[i].uid;
-      int amount = 0;
-      int codAmount = 0;
-      int onlineAmount = 0;
+      double amount = 0;
+      double codAmount = 0;
+      double onlineAmount = 0;
+
       for (QueryDocumentSnapshot doc in snapshot.docs) {
-        int price = int.parse(doc['price']);
+        double price = double.parse(doc['price']);
+        double commission = double.parse(doc['commission']);
         if (doc['agent'] == uid) {
+          CommissionHistory history = CommissionHistory(
+            commission: commission,
+            price: price,
+            amount: commission * price / 100,
+          );
+
           amount += price;
           if (doc['paymentStatus'] == 'COD')
             codAmount += price;
           else
             onlineAmount += price;
+
+          histories.add(history);
         }
       }
+
+      commissionHistories.add(histories);
+
       totalRevenues.add(amount);
       codRevenues.add(codAmount);
       onlineRevenues.add(onlineAmount);
+
       setState(() {
         pages.add(i + 1);
         percentage =
@@ -112,7 +119,6 @@ class _CompanyReportState extends State<CompanyReport> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return isLoading
         ? Center(
             child: Column(
@@ -221,6 +227,12 @@ class _CompanyReportState extends State<CompanyReport> {
                               ? currPage * iCount
                               : widget.fleetOwners.length,
                         )[index],
+                        histories: commissionHistories.sublist(
+                          (currPage * iCount) - iCount,
+                          currPage * iCount <= widget.fleetOwners.length - 1
+                              ? currPage * iCount
+                              : widget.fleetOwners.length,
+                        )[index],
                       ),
                     ),
                   ),
@@ -321,9 +333,10 @@ _onTap(FleetOwners fileInfo, context) {
 recentFileDataRow({
   required BuildContext context,
   required FleetOwners owner,
-  required int totalRevenue,
-  required int codRevenue,
-  required int onlineRevenue,
+  required double totalRevenue,
+  required double codRevenue,
+  required double onlineRevenue,
+  required List<CommissionHistory> histories,
 }) {
   return DataRow(
     cells: [
@@ -403,12 +416,120 @@ recentFileDataRow({
         _CommissionField(owner),
       ),
       DataCell(
-        ElevatedButton(
-          onPressed: () {},
-          child: Text('Show History'),
+        OutlinedButton(
+          child: Text(
+            'Show History',
+            style: TextStyle(color: Colors.blue),
+          ),
+          onPressed: () {
+            _showHistory(
+              context: context,
+              name: owner.name,
+              histories: histories,
+            );
+          },
         ),
       ),
     ],
+  );
+}
+
+class CommissionHistory {
+  final double commission;
+  final double price;
+  final double amount;
+
+  const CommissionHistory({
+    required this.commission,
+    required this.price,
+    required this.amount,
+  });
+}
+
+Future<void> _showHistory({
+  required BuildContext context,
+  required String name,
+  required List<CommissionHistory> histories,
+}) async {
+  final Size size = MediaQuery.of(context).size;
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      backgroundColor: secondaryColor,
+      title: Text(name),
+      content: SizedBox(
+        height: size.height * 0.5,
+        width: size.width * 0.2,
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          children: histories
+              .map(
+                (CommissionHistory history) => Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
+                  margin: const EdgeInsets.symmetric(vertical: 12.0),
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    color: tableRowColor2,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${history.commission} % of Rs. ${history.price}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white54,
+                              height: 2,
+                            ),
+                          ),
+                          Text('Commission: Rs. ${history.amount}'),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Total Amount',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white54,
+                              height: 2,
+                            ),
+                          ),
+                          Text(
+                            'Rs. ${history.price}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text("Close"),
+          style: ElevatedButton.styleFrom(
+            primary: primaryColor,
+          ),
+        ),
+      ],
+    ),
   );
 }
 
@@ -427,7 +548,7 @@ class _CommissionField extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _commissionController;
 
-  double _commissionValue;
+  String _commissionValue;
 
   @override
   Widget build(BuildContext context) {
@@ -449,8 +570,7 @@ class _CommissionField extends StatelessWidget {
                     if (value == null || value.isEmpty) return "Can't be empty";
                     if (double.tryParse(value) == null)
                       return "Enter a valid number";
-                    if (double.parse(value) == owner.commission ||
-                        double.parse(value) == _commissionValue)
+                    if (value == owner.commission || value == _commissionValue)
                       return "Enter new value to update";
                     return null;
                   },
@@ -475,7 +595,7 @@ class _CommissionField extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  double commission = double.parse(_commissionController.text);
+                  String commission = _commissionController.text;
                   showDialog(
                     context: context,
                     builder: (_) {

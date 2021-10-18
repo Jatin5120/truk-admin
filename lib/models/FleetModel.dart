@@ -3,7 +3,7 @@ import 'dart:convert';
 class FleetOwners {
   int sNo;
   String city;
-  double commission;
+  String commission;
   String company;
   String email;
   String gst;
@@ -40,7 +40,7 @@ class FleetOwners {
   FleetOwners copyWith({
     int? sNo,
     String? city,
-    double? commission,
+    String? commission,
     String? company,
     String? email,
     String? gst,
