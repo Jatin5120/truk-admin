@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseHelper {
   static const String insuranceCollection = 'Insurance';
+  static const String shipmentCollection = "Shipment";
+  static const String cuponsCollection = "Coupons";
 
   static Future<void> updateInsurance(int type, String insuranceText) async {
     CollectionReference reference =

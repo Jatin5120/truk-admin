@@ -18,6 +18,7 @@ class _ReportState extends State<Report> {
   int bCount = 0;
   String s = "";
   int uCount = 0;
+
   getData() async {
     for (int i = 0; i < states.length; i++) {
       setState(() {
@@ -51,10 +52,10 @@ class _ReportState extends State<Report> {
       await FirebaseFirestore.instance
           .collection('Shipment')
           .get()
-          .then((valuee) async {
-        for (var w in valuee.docs) {
+          .then((value) async {
+        for (var w in value.docs) {
           http.Response response = await http.get(Uri.parse(
-              "https://maps.googleapis.com/maps/api/geocode/json?latlng=${w['source'].toString().split(',')[0]},${w['source'].toString().split(',')[1]}&key=$kGoogleApiKey"));
+              "https://maps.googleapis.com/maps/api/geocode/json?latlng=${w['source']}&key=$kGoogleApiKey"));
           var data = jsonDecode(response.body);
           if (response.statusCode == 200) {
             for (var d in data['results']) {
@@ -99,17 +100,19 @@ class _ReportState extends State<Report> {
     return isLoading
         ? Container(
             child: Column(
-            children: [
-              CircularProgressIndicator(),
-              Text(
-                  "Generating State Wise Analytics Report Please Wait ......\n$s\n $percentage % done")
-            ],
-          ))
+              children: [
+                CircularProgressIndicator(),
+                Text(
+                  "Generating State Wise Analytics Report Please Wait ......\n$s\n $percentage % done",
+                )
+              ],
+            ),
+          )
         : Container(
             padding: EdgeInsets.all(defaultPadding),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: secondaryColor,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +145,10 @@ class _ReportState extends State<Report> {
                     ],
                     rows: List.generate(
                       dataReport.length,
-                      (index) => recentFileDataRow(dataReport[index]),
+                      (index) => recentFileDataRow(
+                        index: index,
+                        fileInfo: dataReport[index],
+                      ),
                     ),
                   ),
                 ),
@@ -152,7 +158,8 @@ class _ReportState extends State<Report> {
   }
 }
 
-DataRow recentFileDataRow(Map<String, dynamic> fileInfo) {
+DataRow recentFileDataRow(
+    {required int index, required Map<String, dynamic> fileInfo}) {
   return DataRow(
     cells: [
       DataCell(
@@ -160,7 +167,10 @@ DataRow recentFileDataRow(Map<String, dynamic> fileInfo) {
           children: [
             CircleAvatar(
               backgroundColor: Colors.deepOrange,
-              child: Text(fileInfo['state'].toString()[0]),
+              child: Text(
+                fileInfo['state'][0],
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             Flexible(
               child: Padding(
@@ -171,18 +181,28 @@ DataRow recentFileDataRow(Map<String, dynamic> fileInfo) {
           ],
         ),
       ),
-      DataCell(Padding(
-        padding: const EdgeInsets.only(left: 50.0),
-        child: Text("${fileInfo['users']}"),
-      )),
-      DataCell(Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Text("${fileInfo['agents']}"),
-      )),
-      DataCell(Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Text("${fileInfo['bookings']}"),
-      )),
+      DataCell(
+        Padding(
+          padding: const EdgeInsets.only(left: 50.0),
+          child: Text("${fileInfo['users']}"),
+        ),
+      ),
+      DataCell(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Text("${fileInfo['agents']}"),
+        ),
+      ),
+      DataCell(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Text("${fileInfo['bookings']}"),
+        ),
+      ),
     ],
+    color: MaterialStateProperty.resolveWith((Set states) {
+      if (index % 2 == 0) return tableRowColor1;
+      return tableRowColor2;
+    }),
   );
 }

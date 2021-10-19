@@ -29,35 +29,25 @@ class CompanyScreen extends StatelessWidget {
                       SizedBox(height: defaultPadding),
                       StreamBuilder(
                         stream: FirebaseFirestore.instance
-                            .collection("FleetOwners").orderBy('joining')
+                            .collection("FleetOwners")
+                            .orderBy('joining')
                             .snapshots(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot snapshot) {
-                          if (snapshot.data == null) {
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (!snapshot.hasData) {
                             return Center(
-                                child: CircularProgressIndicator());
+                              child: CircularProgressIndicator(),
+                            );
                           }
                           QuerySnapshot docs = snapshot.data;
-                          List<FleetOwners> bm = [];
+                          List<FleetOwners> fleetOwners = [];
                           for (int i = 0; i < docs.docs.length; i++) {
-                            FleetOwners owner= FleetOwners(
-                              sNo: i+1,
-                                name: docs.docs[i]['name'],
-                                image: docs.docs[i]['image'],
-                                email: docs.docs[i]['email'],
-                                token: docs.docs[i]['token'],
-                                uid: docs.docs[i]['uid'],
-                                city: docs.docs[i]['city'],
-                                state: docs.docs[i]['state'],
-                                company: docs.docs[i]['company'],
-                                gst: docs.docs[i]['gst'],
-                                joining: docs.docs[i]['joining'],
-                                mobile: docs.docs[i]['mobile'],
-                                registration: docs.docs[i]['regNumber']
-                            );
-                            bm.add(owner);
+                            FleetOwners owner =
+                                FleetOwners.fromMap(docs.docs[i].data());
+                            owner.sNo = i + 1;
+                            fleetOwners.add(owner);
                           }
-                          return CompanyReport(bm: bm);
+                          return CompanyReport(fleetOwners: fleetOwners);
                         },
                       ),
                       if (Responsive.isMobile(context))
@@ -70,12 +60,12 @@ class CompanyScreen extends StatelessWidget {
                   SizedBox(width: defaultPadding),
                 // On Mobile means if the screen is less than 850 we dont want to show it
                 //if (!Responsive.isMobile(context))
-                  // Expanded(
-                  //   flex: 2,
-                  //   child: StarageDetails(),
-                  // ),
+                // Expanded(
+                //   flex: 2,
+                //   child: StarageDetails(),
+                // ),
               ],
-            )
+            ),
           ],
         ),
       ),
