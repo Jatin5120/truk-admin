@@ -31,6 +31,9 @@ class _CompanyReportState extends State<CompanyReport> {
   List<double> codRevenues = [];
   List<double> onlineRevenues = [];
   List<List<CommissionHistory>> commissionHistories = [];
+  List<double> commissionReceived = [];
+  List<double> commissionPending = [];
+  List<double> paymentDues = [];
 
   static const List<String> _tableHeader = [
     'S. No.',
@@ -41,11 +44,13 @@ class _CompanyReportState extends State<CompanyReport> {
     'Total revenue',
     'Total COD',
     'Total Online',
-    // 'Commission Received',
-    // 'Commission Pending',
-    // 'Pending Dues',
     'Change Commission',
     'Commission History',
+    'Commission Received',
+    'Commission Dues',
+    'Payment Dues',
+    'Clear The Dues'
+
   ];
 
   getData() async {
@@ -66,22 +71,35 @@ class _CompanyReportState extends State<CompanyReport> {
       double amount = 0;
       double codAmount = 0;
       double onlineAmount = 0;
+      double cPending = 0;
+      double cReceived = 0;
+      double cDuesPayment = 0;
 
       for (QueryDocumentSnapshot doc in snapshot.docs) {
         double price = double.parse(doc['price']);
         double commission = double.parse(doc['commission']);
+        double ammount = commission * price / 100;
         if (doc['agent'] == uid) {
           CommissionHistory history = CommissionHistory(
             commission: commission,
             price: price,
             amount: commission * price / 100,
           );
-
           amount += price;
-          if (doc['paymentStatus'] == 'COD')
+          if (doc['paymentStatus'] == 'COD'){
             codAmount += price;
-          else
+            // if(doc['isPaymentPending'])
+
+            cPending += ammount;
+            // else
+            //   cReceived += amount;
+          }else {
             onlineAmount += price;
+            cReceived += ammount;
+            // if(!doc['isPaymentPending'])
+            cDuesPayment += price;
+          }
+
 
           histories.add(history);
         }
@@ -90,8 +108,11 @@ class _CompanyReportState extends State<CompanyReport> {
       commissionHistories.add(histories);
 
       totalRevenues.add(amount);
+      commissionReceived.add(cReceived);
+      commissionPending.add(cPending);
       codRevenues.add(codAmount);
       onlineRevenues.add(onlineAmount);
+      paymentDues.add(cDuesPayment);
 
       setState(() {
         pages.add(i + 1);
@@ -233,6 +254,24 @@ class _CompanyReportState extends State<CompanyReport> {
                               ? currPage * iCount
                               : widget.fleetOwners.length,
                         )[index],
+                        commissionPending: commissionPending.sublist(
+                          (currPage * iCount) - iCount,
+                          currPage * iCount <= widget.fleetOwners.length - 1
+                              ? currPage * iCount
+                              : widget.fleetOwners.length,
+                        )[index],
+                        commissionReceived: commissionReceived.sublist(
+                          (currPage * iCount) - iCount,
+                          currPage * iCount <= widget.fleetOwners.length - 1
+                              ? currPage * iCount
+                              : widget.fleetOwners.length,
+                        )[index],
+                        duesPayment: paymentDues.sublist(
+                          (currPage * iCount) - iCount,
+                          currPage * iCount <= widget.fleetOwners.length - 1
+                              ? currPage * iCount
+                              : widget.fleetOwners.length,
+                        )[index],
                       ),
                     ),
                   ),
@@ -336,6 +375,9 @@ recentFileDataRow({
   required double totalRevenue,
   required double codRevenue,
   required double onlineRevenue,
+  required double commissionPending,
+  required double commissionReceived,
+  required double duesPayment,
   required List<CommissionHistory> histories,
 }) {
   return DataRow(
@@ -427,6 +469,44 @@ recentFileDataRow({
               name: owner.name,
               histories: histories,
             );
+          },
+        ),
+      ),
+      DataCell(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Text(commissionReceived.toString()),
+        ),
+        onTap: () {
+          _onTap(owner, context);
+        },
+      ),
+      DataCell(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Text(commissionPending.toString()),
+        ),
+        onTap: () {
+          _onTap(owner, context);
+        },
+      ),
+      DataCell(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Text(duesPayment.toString()),
+        ),
+        onTap: () {
+          _onTap(owner, context);
+        },
+      ),
+      DataCell(
+        ElevatedButton(
+          child: Text(
+            'Clear Dues',
+          ),
+          onPressed: () {
+            if(duesPayment > commissionPending){
+            }
           },
         ),
       ),
