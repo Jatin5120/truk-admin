@@ -50,7 +50,6 @@ class _CompanyReportState extends State<CompanyReport> {
     'Commission Dues',
     'Payment Dues',
     'Clear The Dues'
-
   ];
 
   getData() async {
@@ -86,20 +85,18 @@ class _CompanyReportState extends State<CompanyReport> {
             amount: commission * price / 100,
           );
           amount += price;
-          if (doc['paymentStatus'] == 'COD'){
+          if (doc['paymentStatus'] == 'COD') {
             codAmount += price;
-            // if(doc['isPaymentPending'])
-
-            cPending += ammount;
-            // else
-            //   cReceived += amount;
-          }else {
+            if (doc['isPaymentPending'])
+              cPending += ammount;
+            else
+              cReceived += amount;
+          } else {
             onlineAmount += price;
             cReceived += ammount;
-            // if(!doc['isPaymentPending'])
-            cDuesPayment += price;
+            if (!doc['isPaymentPending'] && doc['isDue'])
+              cDuesPayment += (price - ammount);
           }
-
 
           histories.add(history);
         }
@@ -504,9 +501,22 @@ recentFileDataRow({
           child: Text(
             'Clear Dues',
           ),
-          onPressed: () {
-            if(duesPayment > commissionPending){
+          onPressed: () async {
+            QuerySnapshot snapshot =
+                await FirebaseFirestore.instance.collection("Shipment").get();
+            for (QueryDocumentSnapshot doc in snapshot.docs) {
+              if (doc['agent'] == owner.uid) {
+                if (doc['isPaymentPending']) {
+                  FirebaseFirestore.instance
+                      .collection('Shipment')
+                      .doc(doc.id)
+                      .update(
+                    {'isPaymentPending': false, 'isDue': false},
+                  );
+                }
+              }
             }
+            _CompanyReportState().getData();
           },
         ),
       ),

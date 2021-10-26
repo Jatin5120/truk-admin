@@ -18,17 +18,21 @@ class FirebaseHelper {
   }
 
   static Future<String> getInsurance(int type) async {
-    CollectionReference reference =
-        FirebaseFirestore.instance.collection(insuranceCollection);
-    DocumentReference doc;
-    if (type == 0)
-      doc = reference.doc('truk_company');
-    else
-      doc = reference.doc('common');
+    try {
+      CollectionReference reference =
+          FirebaseFirestore.instance.collection(insuranceCollection);
+      DocumentReference doc;
+      if (type == 0)
+        doc = reference.doc('truk_company');
+      else
+        doc = reference.doc('common');
 
-    DocumentSnapshot snapshot = await doc.get();
-    dynamic data = snapshot.data();
+      DocumentSnapshot snapshot = await doc.get();
+      dynamic data = snapshot.data();
 
-    return data['insurance']!;
+      return data['insurance']!;
+    } catch (e) {
+      return '';
+    }
   }
 }
