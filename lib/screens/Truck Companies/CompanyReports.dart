@@ -90,7 +90,7 @@ class _CompanyReportState extends State<CompanyReport> {
             if (doc['isPaymentPending'])
               cPending += ammount;
             else
-              cReceived += amount;
+              cReceived += ammount;
           } else {
             onlineAmount += price;
             cReceived += ammount;
@@ -636,12 +636,13 @@ class _CommissionField extends StatelessWidget {
   final FleetOwners owner;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _commissionController;
+   TextEditingController _commissionController;
 
   String _commissionValue;
 
   @override
   Widget build(BuildContext context) {
+    _commissionController = TextEditingController(text: _commissionValue);
     return ConstrainedBox(
       constraints: BoxConstraints(minWidth: 200),
       child: Form(
