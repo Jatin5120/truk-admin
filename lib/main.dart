@@ -1,4 +1,5 @@
 import 'package:admin/constants.dart';
+import 'package:admin/custom_scroll_behavior.dart';
 import 'package:admin/screens/Login/login.dart';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       title: 'Truk Admin',
       theme: ThemeData.dark().copyWith(

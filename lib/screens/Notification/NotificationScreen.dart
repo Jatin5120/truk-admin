@@ -16,31 +16,32 @@ class NotificationScreen extends StatelessWidget {
           children: [
             NotificationHeader(),
             SizedBox(height: defaultPadding),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: Column(
-                    children: [
-                      SizedBox(height: defaultPadding),
-                      NotificationReports(),
-                      if (Responsive.isMobile(context))
-                        SizedBox(height: defaultPadding),
-                      //if (Responsive.isMobile(context)) StarageDetails(),
-                    ],
-                  ),
-                ),
-                if (!Responsive.isMobile(context))
-                  SizedBox(width: defaultPadding),
-                // On Mobile means if the screen is less than 850 we dont want to show it
-                //if (!Responsive.isMobile(context))
-                // Expanded(
-                //   flex: 2,
-                //   child: StarageDetails(),
-                // ),
-              ],
-            )
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     Expanded(
+            //       flex: 5,
+            //       child: Column(
+            //         children: [
+            //           SizedBox(height: defaultPadding),
+            //           NotificationReports(),
+            //           if (Responsive.isMobile(context))
+            //             SizedBox(height: defaultPadding),
+            //           //if (Responsive.isMobile(context)) StarageDetails(),
+            //         ],
+            //       ),
+            //     ),
+            //     if (!Responsive.isMobile(context))
+            //       SizedBox(width: defaultPadding),
+            //     // On Mobile means if the screen is less than 850 we dont want to show it
+            //     //if (!Responsive.isMobile(context))
+            //     // Expanded(
+            //     //   flex: 2,
+            //     //   child: StarageDetails(),
+            //     // ),
+            //   ],
+            // ),
+            NotificationSending(),
           ],
         ),
       ),
